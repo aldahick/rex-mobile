@@ -1,10 +1,16 @@
 import React, { useState } from "react";
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Redirect } from "react-router";
-import { UserState } from "../component/auth";
-import { GoogleLoginButton } from "../component/auth/GoogleLoginButton";
+import { GoogleLoginButton, UserState } from "../component/auth";
 import { config } from "../config";
 import { IAuthToken } from "../graphql/types";
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center"
+  }
+});
 
 export const LoginScene: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -19,7 +25,7 @@ export const LoginScene: React.FC = () => {
   }
 
   return (
-    <View>
+    <View style={styles.container}>
       <GoogleLoginButton
         clientId={config.googleClientId}
         onSuccess={onLogin}

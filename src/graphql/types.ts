@@ -12,6 +12,11 @@ export type Scalars = {
   Upload: unknown;
 };
 
+export enum IAuthClientType {
+  Mobile = 'MOBILE',
+  Web = 'WEB'
+}
+
 export type IAuthToken = {
   __typename?: 'AuthToken';
   token: Scalars['String'];
@@ -163,8 +168,8 @@ export type IMutation = {
   startContainer: Scalars['Boolean'];
   stopContainer: Scalars['Boolean'];
   redeployContainer: Scalars['Boolean'];
-  addMediaDownload: IProgress;
   createHost: IHost;
+  addMediaDownload: IProgress;
   createNote: INote;
   removeNote: Scalars['Boolean'];
   updateNoteBody: Scalars['Boolean'];
@@ -187,6 +192,7 @@ export type IMutation = {
 
 export type IMutationCreateAuthTokenGoogleArgs = {
   googleIdToken: Scalars['String'];
+  clientType: IAuthClientType;
 };
 
 
@@ -255,14 +261,14 @@ export type IMutationRedeployContainerArgs = {
 };
 
 
-export type IMutationAddMediaDownloadArgs = {
-  url: Scalars['String'];
-  destinationKey: Scalars['String'];
+export type IMutationCreateHostArgs = {
+  host: ICreateHostInput;
 };
 
 
-export type IMutationCreateHostArgs = {
-  host: ICreateHostInput;
+export type IMutationAddMediaDownloadArgs = {
+  url: Scalars['String'];
+  destinationKey: Scalars['String'];
 };
 
 
@@ -385,9 +391,9 @@ export type IQuery = {
   calendars: Array<ICalendar>;
   container: IContainer;
   containers: Array<IContainer>;
-  mediaItems: Array<IMediaItem>;
   host: IHost;
   hosts: Array<IHost>;
+  mediaItems: Array<IMediaItem>;
   note: INote;
   notes: Array<INote>;
   progress: IProgress;
@@ -410,13 +416,13 @@ export type IQueryContainerArgs = {
 };
 
 
-export type IQueryMediaItemsArgs = {
-  dir: Scalars['String'];
+export type IQueryHostArgs = {
+  id: Scalars['String'];
 };
 
 
-export type IQueryHostArgs = {
-  id: Scalars['String'];
+export type IQueryMediaItemsArgs = {
+  dir: Scalars['String'];
 };
 
 

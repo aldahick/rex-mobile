@@ -8,7 +8,10 @@ import { callMutationSafe } from "../../util/graphql";
 
 const MUTATION_CREATE_AUTH_TOKEN_GOOGLE = gql`
 mutation Web_CreateAuthTokenGoogle($googleIdToken: String!) {
-  authToken: createAuthTokenGoogle(googleIdToken: $googleIdToken) {
+  authToken: createAuthTokenGoogle(
+    googleIdToken: $googleIdToken,
+    clientType: MOBILE
+  ) {
     token
     user {
       roles {
@@ -26,12 +29,14 @@ mutation Web_CreateAuthTokenGoogle($googleIdToken: String!) {
 export const GoogleLoginButton: React.FC<{
   clientId: string;
   onSuccess: (authToken: IAuthToken) => Promise<void>;
-}> = ({ onSuccess }) => {
+}> = ({ clientId, onSuccess }) => {
   const [createAuthToken] = useMutation<{
     authToken: IMutation["createAuthTokenGoogle"];
   }, IMutationCreateAuthTokenGoogleArgs>(MUTATION_CREATE_AUTH_TOKEN_GOOGLE);
 
-  GoogleSignin.configure();
+  GoogleSignin.configure({
+    iosClientId: clientId
+  });
 
   const onLogin = async () => {
     try {

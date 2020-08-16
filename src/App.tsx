@@ -8,6 +8,7 @@ import { ApolloProvider } from "react-apollo";
 import { NativeRouter, Route, Switch } from "react-router-native";
 import { SecureRoute } from "./component/auth";
 import { UserState } from "./component/auth/UserState";
+import { Layout } from "./component/Layout";
 import { config } from "./config";
 import { scenes } from "./scenes";
 
@@ -31,19 +32,21 @@ export const App: React.FC = () => (
   <NativeRouter>
     <MobxProvider>
       <ApolloProvider client={client}>
-        <Switch>
-          {scenes.map(scene => {
-            const props = {
-              key: scene.route,
-              exact: true,
-              path: scene.route,
-              component: scene.component
-            };
-            return scene.authCheck !== undefined
-              ? <SecureRoute {...props} check={scene.authCheck} />
-              : <Route {...props} />;
-          })}
-        </Switch>
+        <Layout>
+          <Switch>
+            {scenes.map(scene => {
+              const props = {
+                key: scene.route,
+                exact: true,
+                path: scene.route,
+                component: scene.component
+              };
+              return scene.authCheck !== undefined
+                ? <SecureRoute {...props} check={scene.authCheck} />
+                : <Route {...props} />;
+            })}
+          </Switch>
+        </Layout>
       </ApolloProvider>
     </MobxProvider>
   </NativeRouter>
