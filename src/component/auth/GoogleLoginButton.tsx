@@ -26,7 +26,7 @@ mutation Web_CreateAuthTokenGoogle($googleIdToken: String!) {
 export const GoogleLoginButton: React.FC<{
   clientId: string;
   onSuccess: (authToken: IAuthToken) => Promise<void>;
-}> = ({ clientId, onSuccess }) => {
+}> = ({ onSuccess }) => {
   const [createAuthToken] = useMutation<{
     authToken: IMutation["createAuthTokenGoogle"];
   }, IMutationCreateAuthTokenGoogleArgs>(MUTATION_CREATE_AUTH_TOKEN_GOOGLE);
@@ -45,7 +45,7 @@ export const GoogleLoginButton: React.FC<{
       });
       await onSuccess(authToken);
     } catch (err) {
-      console.error(err.message);
+      console.error(err);
     }
   };
 
