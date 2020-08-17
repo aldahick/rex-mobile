@@ -7,7 +7,7 @@ import { IAuthToken, IMutation, IMutationCreateAuthTokenGoogleArgs } from "../..
 import { callMutationSafe } from "../../util/graphql";
 
 const MUTATION_CREATE_AUTH_TOKEN_GOOGLE = gql`
-mutation Web_CreateAuthTokenGoogle($googleIdToken: String!) {
+mutation Mobile_CreateAuthTokenGoogle($googleIdToken: String!) {
   authToken: createAuthTokenGoogle(
     googleIdToken: $googleIdToken,
     clientType: MOBILE
