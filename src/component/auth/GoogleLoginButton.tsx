@@ -3,14 +3,14 @@ import { GoogleSignin, GoogleSigninButton } from "@react-native-community/google
 import gql from "graphql-tag";
 import { useMutation } from "react-apollo";
 import { View } from "react-native";
-import { IAuthToken, IMutation, IMutationCreateAuthTokenGoogleArgs } from "../../graphql/types";
+import { IAuthClientType, IAuthToken, IMutation, IMutationCreateAuthTokenGoogleArgs } from "../../graphql/types";
 import { callMutationSafe } from "../../util/graphql";
 
 const MUTATION_CREATE_AUTH_TOKEN_GOOGLE = gql`
 mutation Mobile_CreateAuthTokenGoogle($googleIdToken: String!) {
   authToken: createAuthTokenGoogle(
     googleIdToken: $googleIdToken,
-    clientType: MOBILE
+    clientType: ${IAuthClientType.Mobile}
   ) {
     token
     user {
@@ -32,7 +32,7 @@ export const GoogleLoginButton: React.FC<{
 }> = ({ clientId, onSuccess }) => {
   const [createAuthToken] = useMutation<{
     authToken: IMutation["createAuthTokenGoogle"];
-  }, IMutationCreateAuthTokenGoogleArgs>(MUTATION_CREATE_AUTH_TOKEN_GOOGLE);
+  }, Omit<IMutationCreateAuthTokenGoogleArgs, "clientType">>(MUTATION_CREATE_AUTH_TOKEN_GOOGLE);
 
   GoogleSignin.configure({
     iosClientId: clientId
@@ -46,7 +46,7 @@ export const GoogleLoginButton: React.FC<{
         throw new Error("No ID token");
       }
       const { authToken } = await callMutationSafe(createAuthToken, {
-        googleIdToken: user.idToken,
+        googleIdToken: user.idToken
       });
       await onSuccess(authToken);
     } catch (err) {

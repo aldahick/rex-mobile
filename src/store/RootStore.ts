@@ -1,17 +1,16 @@
-import { computed } from "mobx";
+import { AuthStore } from "./AuthStore";
 import { SocketStore } from "./SocketStore";
 import { StatusStore } from "./StatusStore";
 
 export class RootStore {
+  readonly authStore = new AuthStore();
+
   readonly socketStore = new SocketStore(this);
 
   readonly statusStore = new StatusStore();
 
-  @computed
-  get allStores(): Omit<RootStore, "allStores"> & { rootStore: Omit<RootStore, "allStores"> } {
-    return {
-      rootStore: this,
-      ...this,
-    };
-  }
+  allStores: Omit<RootStore, "allStores"> & { rootStore: Omit<RootStore, "allStores"> } = {
+    rootStore: this,
+    ...this,
+  };
 }

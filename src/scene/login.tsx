@@ -1,9 +1,12 @@
 import React, { useState } from "react";
+import { observer } from "mobx-react";
 import { StyleSheet, View } from "react-native";
+import PushNotification from "react-native-push-notification";
 import { Redirect } from "react-router";
-import { GoogleLoginButton, UserState } from "../component/auth";
+import { GoogleLoginButton } from "../component/auth";
 import { config } from "../config";
 import { IAuthToken } from "../graphql/types";
+import { useStores } from "../hook/useStores";
 
 const styles = StyleSheet.create({
   container: {
@@ -12,11 +15,13 @@ const styles = StyleSheet.create({
   }
 });
 
-export const LoginScene: React.FC = () => {
+export const LoginScene: React.FC = observer(() => {
+  const { authStore } = useStores();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const onLogin = async ({ token, user: { roles } }: IAuthToken) => {
-    await UserState.setAuth(token, roles ?? []);
+    await authStore.setAuth(token, roles ?? []);
+    await PushNotification.requestPermissions();
     setIsLoggedIn(true);
   };
 
@@ -32,4 +37,4 @@ export const LoginScene: React.FC = () => {
       />
     </View>
   );
-};
+});

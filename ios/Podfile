@@ -10,11 +10,6 @@ target 'rex' do
 
   use_react_native!(:path => config["reactNativePath"])
 
-  target 'rexTests' do
-    inherit! :complete
-    # Pods for testing
-  end
-
   # Enables Flipper.
   #
   # Note that if you have use_frameworks! enabled, Flipper will not work and

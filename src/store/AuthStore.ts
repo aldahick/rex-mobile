@@ -1,32 +1,22 @@
 import AsyncStorage from "@react-native-community/async-storage";
 import { AccessControl } from "accesscontrol";
 import * as _ from "lodash";
-import { IRole } from "../../graphql/types";
-import { AuthCheck } from "./AuthCheck";
+import { action, computed, observable } from "mobx";
+import { AuthCheck } from "../component/auth";
+import { IRole } from "../graphql/types";
 
 const TOKEN_KEY = "rex.auth.token";
 const ROLES_KEY = "rex.auth.roles";
 
-export const UserState = new (class {
-  token?: string;
+export class AuthStore {
+  @observable token?: string;
 
   private accessControl?: AccessControl;
 
   private roles?: IRole[];
 
-  async init(): Promise<void> {
-    const token = await AsyncStorage.getItem(TOKEN_KEY);
-    let roles: IRole[] | undefined;
-    const rolesJson = await AsyncStorage.getItem(ROLES_KEY);
-    if (rolesJson !== null) {
-      roles = JSON.parse(rolesJson) as IRole[] | null ?? undefined;
-    }
-    if (token !== null && roles) {
-      await this.setAuth(token, roles);
-    }
-  }
-
-  async setAuth(token: string, roles: IRole[]) {
+  @action.bound
+  async setAuth(token: string, roles: IRole[]): Promise<void> {
     await AsyncStorage.setItem(TOKEN_KEY, token);
     await AsyncStorage.setItem(ROLES_KEY, JSON.stringify(roles));
     this.token = token;
@@ -34,7 +24,8 @@ export const UserState = new (class {
     this.createAccessControl();
   }
 
-  async removeAuth() {
+  @action.bound
+  async removeAuth(): Promise<void> {
     await AsyncStorage.removeItem(TOKEN_KEY);
     await AsyncStorage.removeItem(ROLES_KEY);
     delete this.token;
@@ -42,6 +33,7 @@ export const UserState = new (class {
     delete this.accessControl;
   }
 
+  @computed
   get isAuthenticated(): boolean {
     return this.token !== undefined && !!this.roles && !!this.accessControl;
   }
@@ -59,6 +51,18 @@ export const UserState = new (class {
     );
   }
 
+  async init(): Promise<void> {
+    const token = await AsyncStorage.getItem(TOKEN_KEY);
+    let roles: IRole[] | undefined;
+    const rolesJson = await AsyncStorage.getItem(ROLES_KEY);
+    if (rolesJson !== null) {
+      roles = JSON.parse(rolesJson) as IRole[] | null ?? undefined;
+    }
+    if (token !== null && roles) {
+      await this.setAuth(token, roles);
+    }
+  }
+
   private createAccessControl() {
     if (!this.roles) {
       return;
@@ -72,4 +76,4 @@ export const UserState = new (class {
       }))),
     ));
   }
-})();
+}

@@ -1,13 +1,39 @@
 import React, { useState } from "react";
+import gql from "graphql-tag";
+import { observer } from "mobx-react";
+import { useMutation } from "react-apollo";
 import { Button } from "react-native";
+import PushNotification from "react-native-push-notification";
 import { Redirect } from "react-router";
-import { UserState } from "./UserState";
+import { IMutationDeregisterNotificationDeviceArgs, INotificationPlatform } from "../../graphql/types";
+import { useStores } from "../../hook/useStores";
+import { callMutationSafe } from "../../util/graphql";
 
-export const LogoutButton: React.FC = () => {
+const MUTATION_DEREGISTER_NOTIFICATION_DEVICE = gql`
+mutation Mobile_DeregisterNotificationDevice($platform: NotificationPlatform) {
+  deregisterNotificationDevice(platform: $platform)
+}
+`;
+
+export const LogoutButton: React.FC = observer(() => {
+  const [deregisterNotificationDevice] = useMutation<unknown, IMutationDeregisterNotificationDeviceArgs>(MUTATION_DEREGISTER_NOTIFICATION_DEVICE);
   const [isLoggedOut, setIsLoggedOut] = useState(false);
+  const { authStore, statusStore } = useStores();
 
   const onLogout = async () => {
-    await UserState.removeAuth();
+    try {
+      await callMutationSafe(deregisterNotificationDevice, {
+        platform: INotificationPlatform.Ios
+      });
+    } catch (err) {
+      // statusStore.setErrorMessage(err instanceof Error ? err.message : err);
+    }
+    try {
+      await authStore.removeAuth();
+    } catch (err) {
+      statusStore.setErrorMessage(err instanceof Error ? err.message : err);
+    }
+    PushNotification.abandonPermissions();
     setIsLoggedOut(true);
   };
 
@@ -20,4 +46,4 @@ export const LogoutButton: React.FC = () => {
       Log Out
     </Button>
   );
-};
+});

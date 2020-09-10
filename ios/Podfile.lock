@@ -315,6 +315,8 @@ PODS:
     - React-jsi (= 0.63.2)
   - RNCAsyncStorage (1.11.0):
     - React
+  - RNCPushNotificationIOS (1.4.1):
+    - React
   - RNGoogleSignin (4.0.3):
     - GoogleSignIn (~> 5.0.0)
     - React
@@ -371,6 +373,7 @@ DEPENDENCIES:
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
+  - "RNCPushNotificationIOS (from `../node_modules/@react-native-community/push-notification-ios`)"
   - "RNGoogleSignin (from `../node_modules/@react-native-community/google-signin`)"
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -446,6 +449,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-community/async-storage"
+  RNCPushNotificationIOS:
+    :path: "../node_modules/@react-native-community/push-notification-ios"
   RNGoogleSignin:
     :path: "../node_modules/@react-native-community/google-signin"
   Yoga:
@@ -493,10 +498,11 @@ SPEC CHECKSUMS:
   React-RCTVibration: 4d2e726957f4087449739b595f107c0d4b6c2d2d
   ReactCommon: a0a1edbebcac5e91338371b72ffc66aa822792ce
   RNCAsyncStorage: d059c3ee71738c39834a627476322a5a8cd5bf36
+  RNCPushNotificationIOS: c145c6253ea016e5efeff604f2720736b4a596f7
   RNGoogleSignin: ccf71ee4b6cfd324fd788a41e457e2043838c0d9
   Yoga: 7740b94929bbacbddda59bf115b5317e9a161598
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: a40a646073da1596809dedd1b80b471e147d5c72
+PODFILE CHECKSUM: f62130255c03756494ad881f830481d60f8828a0
 
 COCOAPODS: 1.9.3

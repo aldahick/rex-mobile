@@ -1,37 +1,29 @@
 import React from "react";
-import { InMemoryCache } from "apollo-cache-inmemory";
-import ApolloClient from "apollo-client";
-import { setContext } from "apollo-link-context";
-import { createHttpLink } from "apollo-link-http";
 import { Provider as MobxProvider } from "mobx-react";
 import { ApolloProvider } from "react-apollo";
 import { NativeRouter, Route, Switch } from "react-router-native";
+import "mobx-react-lite/batchingForReactNative";
+import { createApolloClient } from "./apollo";
 import { SecureRoute } from "./component/auth";
-import { UserState } from "./component/auth/UserState";
 import { Layout } from "./component/Layout";
-import { config } from "./config";
+import { setupPushNotifications } from "./pushNotifications";
 import { scenes } from "./scenes";
+import { RootStore } from "./store/RootStore";
 
-const client = new ApolloClient({
-  link: setContext((_, { headers }: { headers: Record<string, string> }) => ({
-    headers: {
-      ...headers,
-      authorization: UserState.token
-    }
-  })).concat(createHttpLink({
-    uri: `${config.apiUrl}/graphql`
-  })),
-  cache: new InMemoryCache(),
-  defaultOptions: {
-    query: { errorPolicy: "all" },
-    mutate: { errorPolicy: "all" }
-  }
+const rootStore = new RootStore();
+let apolloClient = createApolloClient(rootStore);
+
+rootStore.authStore.init().then(() => {
+  apolloClient = createApolloClient(rootStore);
+  setupPushNotifications(rootStore);
+}).catch(err => {
+  console.error(err);
 });
 
 export const App: React.FC = () => (
   <NativeRouter>
-    <MobxProvider>
-      <ApolloProvider client={client}>
+    <MobxProvider {...rootStore.allStores}>
+      <ApolloProvider client={apolloClient}>
         <Layout>
           <Switch>
             {scenes.map(scene => {

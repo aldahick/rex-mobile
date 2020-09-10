@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "rex.app"
-               BlueprintName = "rex"
-               ReferencedContainer = "container:rex.xcodeproj">
+               BuildableName = "Rex.app"
+               BlueprintName = "Rex"
+               ReferencedContainer = "container:Rex.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -35,7 +35,7 @@
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
                BuildableName = "rexTests.xctest"
                BlueprintName = "rexTests"
-               ReferencedContainer = "container:rex.xcodeproj">
+               ReferencedContainer = "container:Rex.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "rex.app"
-            BlueprintName = "rex"
-            ReferencedContainer = "container:rex.xcodeproj">
+            BuildableName = "Rex.app"
+            BlueprintName = "Rex"
+            ReferencedContainer = "container:Rex.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "rex.app"
-            BlueprintName = "rex"
-            ReferencedContainer = "container:rex.xcodeproj">
+            BuildableName = "Rex.app"
+            BlueprintName = "Rex"
+            ReferencedContainer = "container:Rex.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
